@@ -11,31 +11,11 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:hello.helloWorld",
-    "onCommand:fuyun.git",
-    "onCommand:fuyun.request",
-    "onCommand:fuyun.reactpro",
     "onCommand:fuyun.showLangByKey"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "hello.helloWorld",
-        "title": "create dir index"
-      },
-      {
-        "command": "fuyun.git",
-        "title": "Git add、commit、push、打开C部署系统"
-      },
-      {
-        "command": "fuyun.request",
-        "title": "Http Request Tpl"
-      },
-      {
-        "command": "fuyun.reactpro",
-        "title": "fuyun -- 插入React Pro代码块"
-      },
       {
         "command": "fuyun.showLangByKey",
         "title": "i18 showLangByKey"
@@ -46,33 +26,8 @@
         "command": "fuyun.showLangByKey",
         "key": "ctrl+shift+g",
         "mac": "cmd+shift+g"
-      },
-      {
-        "command": "fuyun.request",
-        "key": "ctrl+shift+r",
-        "mac": "cmd+shift+r"
-      },
-      {
-        "command": "fuyun.reactpro",
-        "group": "1_Starling",
-        "when": "fuyun:rightClick"
       }
-    ],
-    "snippets": [
-      {
-        "language": "typescriptreact",
-        "path": "./snippets/common.json"
-      }
-    ],
-    "menus": {
-      "explorer/context": [
-        {
-          "command": "hello.helloWorld",
-          "group": "1_modification",
-          "when": "explorerResourceIsFolder"
-        }
-      ]
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",

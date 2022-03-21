@@ -2,8 +2,7 @@ import { readFile } from "fs";
 import { promisify } from "util";
 
 import * as fsWalk from "@nodelib/fs.walk";
-
-import { getRootPath } from "./editor";
+import { getRootPath } from "./common";
 
 export const walkFile = async () => {
   const path = getRootPath()?.fsPath;

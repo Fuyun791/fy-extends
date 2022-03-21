@@ -1,44 +1,98 @@
-import { readdir, writeFile } from "fs";
-import { join } from "path";
-import { promisify } from "util";
-import * as https from "https";
+import * as vscode from "vscode";
+import { addI18nLang, handleLangToMap } from "./operate";
 
-const indexFileName = "index";
-const indexFileExt = ".ts";
+const translate = require("@vitalets/google-translate-api");
 
-export async function genIndex(dir: string) {
-  // 得到目录下所有文件名集合
-  const result = await promisify(readdir)(dir);
+const { window } = vscode;
 
-  // 过滤掉index.ts文件和index文件夹
-  const moduleNames = result
-    .map((n) => n.split(".")[0])
-    .filter((m) => m !== indexFileName);
+const map = {};
 
-  // 生成聚合导出代码
-  const content = moduleNames.map((n) => `export * from './${n}';`).join("\n");
+const getKeys = (obj: any) => {
+  if (obj) {
+    return Object.keys(obj);
+  }
+  return [];
+};
 
-  // 写入文件夹下
-  await promisify(writeFile)(join(dir, indexFileName + indexFileExt), content);
-}
+const checkI18n = async () => {
+  const options: vscode.InputBoxOptions = {
+    prompt: "Label: ",
+    placeHolder: "请输入多语言key",
+  };
+  // showOpenDialog
+  const value = await window.showInputBox(options);
 
-export function httpReq() {
-  https
-    .get(
-      "https://nextjsfirst-iqux2i3w7-fuyun791.vercel.app/api/hello",
-      (res) => {
-        console.log("statusCode:", res.statusCode);
-        console.log("headers:", res.headers);
+  if (!value) {
+    throw new Error("请输入多语言key");
+  }
+  //
+  const result = await handleLangToMap();
 
-        console.log("res", res);
-
-        res.on("data", (d: Buffer) => {
-          console.log("ddd", d.toString(), d);
-          // process.stdout.write(d);
-        });
+  const pickOptions: { code: string; label: string }[] = [];
+  if (result) {
+    for (const lang in result) {
+      const langKeyMap = result[lang];
+      if (langKeyMap.hasOwnProperty(value)) {
+        console.log(lang, langKeyMap[value]);
+        pickOptions.push({ code: "", label: `${lang}: ${langKeyMap[value]}` });
       }
-    )
-    .on("error", (e) => {
-      console.error(e);
-    });
-}
+    }
+  }
+  window.showQuickPick(pickOptions);
+};
+
+const addI18 = async () => {
+  const options: vscode.InputBoxOptions = {
+    prompt: "Label: ",
+    placeHolder: "请输入多语言key和中文",
+  };
+  const value = await window.showInputBox(options);
+  if (!value) {
+    throw new Error("请输入多语言key");
+  }
+  try {
+    const [key, text] = value.split(" ");
+    addI18nLang("zh", key, text);
+    const { text: enText } = await translate(text, { to: "en" });
+    addI18nLang("en", key, enText);
+    vscode.window.showInformationMessage("Success");
+  } catch (error) {
+    vscode.window.showErrorMessage("Error");
+  }
+};
+
+const updateI18n = async () => {
+  const options: vscode.InputBoxOptions = {
+    prompt: "Label: ",
+    placeHolder: "请输入多语言key和语言类型",
+  };
+  const value = await window.showInputBox(options);
+  if (!value) {
+    throw new Error("请输入多语言key");
+  }
+  // const result = "".match(new RegExp(`${"abc"}:[\\s\\S]*?,`, "g"));
+};
+
+export const handleI18 = async () => {
+  const pickOptions = [
+    { code: "find", label: "根据key查找多语言" },
+    { code: "add", label: "根据key和中文添加多语言" },
+    { code: "update", label: "根据key和语言类型更新" },
+  ];
+  const action = await vscode.window.showQuickPick(pickOptions);
+  if (typeof action === "object" && action !== undefined) {
+    switch (action.code) {
+      case "find":
+        checkI18n();
+        break;
+      case "add":
+        addI18();
+        break;
+      case "update":
+        updateI18n();
+        break;
+      default:
+        break;
+    }
+  }
+};
