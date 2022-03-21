@@ -34,7 +34,7 @@ export function httpReq() {
 
         res.on("data", (d: Buffer) => {
           console.log("ddd", d.toString(), d);
-          process.stdout.write(d);
+          // process.stdout.write(d);
         });
       }
     )

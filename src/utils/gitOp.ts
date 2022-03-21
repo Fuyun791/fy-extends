@@ -21,6 +21,8 @@ export const gitOp = async () => {
       await git.add(".");
       const { commit } = await git.commit(value.trim());
       const branch = await git.revparse(["--abbrev-ref", "HEAD"]);
+      console.log("commit", commit, branch);
+      // process.stdout.write(`"commit", ${commit}, ${branch}`);
       if (!commit) {
         // 如果没有更改内容，推测是develop, qa merge后的，需要直接push，所以没有 throw
         if (!["develop", "qa", "dev"].includes(branch)) {
@@ -40,7 +42,7 @@ export const gitOp = async () => {
       } else {
         window.showInformationMessage("push成功");
       }
-    } catch (e) {
+    } catch (e: any) {
       window.showErrorMessage(e.message);
     }
   }

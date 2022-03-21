@@ -1,5 +1,5 @@
 {
-  "name": "fuyun791-hello",
+  "name": "hello",
   "displayName": "helloworld",
   "description": "first extension",
   "publisher": "fuyun791",
@@ -11,25 +11,51 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:hello.helloWorld"
+    "onCommand:hello.helloWorld",
+    "onCommand:fuyun.git",
+    "onCommand:fuyun.request",
+    "onCommand:fuyun.reactpro",
+    "onCommand:fuyun.showLangByKey"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "hello.helloWorld",
-        "title": "createdirindex"
+        "title": "create dir index"
       },
       {
         "command": "fuyun.git",
         "title": "Git add、commit、push、打开C部署系统"
+      },
+      {
+        "command": "fuyun.request",
+        "title": "Http Request Tpl"
+      },
+      {
+        "command": "fuyun.reactpro",
+        "title": "fuyun -- 插入React Pro代码块"
+      },
+      {
+        "command": "fuyun.showLangByKey",
+        "title": "i18 showLangByKey"
       }
     ],
     "keybindings": [
       {
-        "command": "fuyun.git",
+        "command": "fuyun.showLangByKey",
         "key": "ctrl+shift+g",
         "mac": "cmd+shift+g"
+      },
+      {
+        "command": "fuyun.request",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r"
+      },
+      {
+        "command": "fuyun.reactpro",
+        "group": "1_Starling",
+        "when": "fuyun:rightClick"
       }
     ],
     "snippets": [
@@ -60,6 +86,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@types/babel__traverse": "^7.14.2",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
@@ -76,6 +103,9 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
+    "@saber2pr/ts-compiler": "^0.3.6",
+    "@vitalets/google-translate-api": "^8.0.0",
+    "clipboardy": "^3.0.0",
     "simple-git": "^3.2.6",
     "vsce": "^2.6.5"
   }
