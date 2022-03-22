@@ -1,11 +1,15 @@
 {
-  "name": "hello",
-  "displayName": "helloworld",
-  "description": "first extension",
+  "name": "fyI18",
+  "displayName": "fyI18",
+  "description": "help i18 util, include add and look",
   "publisher": "fuyun791",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.63.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fuyun791/fy-extends"
   },
   "categories": [
     "Other"
